@@ -14,14 +14,14 @@ objective_independent = {
 	#Negative =&gt; better, positive =&gt; worse. If total sum exceeds 1 million unit will not go there. Beware fixed point overflow at 2 million...
 	weight = {
 		# ============================================
-		# PRIORIDAD 1: DEFENDER CAPITAL
+		# PRIORITY 1: DEFEND THE CAPITAL
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es nuestra capital
+					# This is our capital
 					is_capital = yes
-					# Hay enemigos en la provincia o adyacentes
+					# There are enemies in the province or adjacent ones
 					OR = {
 						any_enemy_country = {
 							any_army = {
@@ -35,24 +35,24 @@ objective_independent = {
 						}
 					}
 				}
-				# Peso muy negativo (muy atractivo) para defender
+				# Very negative weight (very attractive) for defending
 				weight = -1000000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 2: DEFENDER TERRITORIO
+		# PRIORITY 2: DEFEND NATIONAL TERRITORY
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es nuestra provincia
+					# This is one of our provinces
 					owner = {
 						country = ROOT
 					}
-					# No es capital (ya cubierta arriba)
+					# Not the capital (already covered above)
 					is_capital = no
-					# Hay enemigos en la provincia o adyacentes
+					# There are enemies in the province or adjacent ones
 					OR = {
 						any_enemy_country = {
 							any_army = {
@@ -66,48 +66,48 @@ objective_independent = {
 						}
 					}
 				}
-				# Peso muy negativo pero menos que capital
+				# Very negative weight, but less than the capital
 				weight = -500000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 3: ATACAR ENEMIGO CERCANO
+		# PRIORITY 3: ATTACK A NEARBY ENEMY
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Hay ejércitos enemigos en esta provincia
+					# There are enemy armies in this province
 					any_enemy_country = {
 						any_army = {
 							location = this
 						}
 					}
-					# Y es provincia enemiga (no nuestra)
+					# And it is an enemy province (not ours)
 					owner = {
 						country = {
 							is_enemy_of = ROOT
 						}
 					}
 				}
-				# Atacar ejércitos enemigos en territorio enemigo
+				# Attack enemy armies on enemy territory
 				weight = -300000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 4: ASEDIAR TERRITORIO CERCANO
+		# PRIORITY 4: SIEGE NEARBY TERRITORY
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es provincia enemiga
+					# It is an enemy province
 					owner = {
 						country = {
 							is_enemy_of = ROOT
 						}
 					}
-					# No tiene ejército enemigo (ya cubierto en prioridad 3)
+					# No enemy army (already covered in priority 3)
 					NOT = {
 						any_enemy_country = {
 							any_army = {
@@ -115,32 +115,32 @@ objective_independent = {
 							}
 						}
 					}
-					# Está adyacente a nuestro territorio
+					# It is adjacent to our territory
 					any_neighbor_province = {
 						owner = {
 							country = ROOT
 						}
 					}
 				}
-				# Asediar territorio enemigo cercano
+				# Siege nearby enemy territory
 				weight = -200000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 5: ASEDIAR CAPITAL ENEMIGA
+		# PRIORITY 5: SIEGE THE ENEMY CAPITAL
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es capital enemiga
+					# It is the enemy capital
 					is_capital = yes
 					owner = {
 						country = {
 							is_enemy_of = ROOT
 						}
 					}
-					# No tiene ejército enemigo (ya cubierto en prioridad 3)
+					# No enemy army (already covered in priority 3)
 					NOT = {
 						any_enemy_country = {
 							any_army = {
@@ -149,18 +149,18 @@ objective_independent = {
 						}
 					}
 				}
-				# Asediar capital enemiga (muy prioritario para ganar la guerra)
+				# Siege the enemy capital (high priority to win the war)
 				weight = -250000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 6: ATACAR PROVINCIAS CON RECURSOS
+		# PRIORITY 6: ATTACK RESOURCE-RICH PROVINCES
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es provincia enemiga
+					# It is an enemy province
 					owner = {
 						country = {
 							is_enemy_of = ROOT
@@ -178,7 +178,7 @@ objective_independent = {
 							trade_goods = grain
 						}
 					}
-					# No está adyacente (ya cubierto en prioridad 4)
+					# Not adjacent (already covered in priority 4)
 					NOT = {
 						any_neighbor_province = {
 							owner = {
@@ -187,24 +187,24 @@ objective_independent = {
 						}
 					}
 				}
-				# Atacar provincias con recursos
+				# Attack provinces with resources
 				weight = -150000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 7: ASEDIAR PROVINCIAS LEJANAS
+		# PRIORITY 7: SIEGE DISTANT PROVINCES
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es provincia enemiga
+					# It is an enemy province
 					owner = {
 						country = {
 							is_enemy_of = ROOT
 						}
 					}
-					# No tiene ejército enemigo
+					# No enemy army
 					NOT = {
 						any_enemy_country = {
 							any_army = {
@@ -212,7 +212,7 @@ objective_independent = {
 							}
 						}
 					}
-					# No está adyacente (ya cubierto en prioridad 4)
+					# Not adjacent (already covered in priority 4)
 					NOT = {
 						any_neighbor_province = {
 							owner = {
@@ -221,22 +221,22 @@ objective_independent = {
 						}
 					}
 				}
-				# Asediar provincias enemigas lejanas
+				# Siege distant enemy provinces
 				weight = -100000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 8: REFORZAR FRONTERAS
+		# PRIORITY 8: REINFORCE BORDERS
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es nuestra provincia
+					# This is one of our provinces
 					owner = {
 						country = ROOT
 					}
-					# Está en la frontera (adyacente a enemigo)
+					# It is on the border (adjacent to an enemy)
 					any_neighbor_province = {
 						owner = {
 							country = {
@@ -244,7 +244,7 @@ objective_independent = {
 							}
 						}
 					}
-					# No hay enemigos cerca (ya cubierto en prioridad 2)
+					# No enemies nearby (already covered in priority 2)
 					NOT = {
 						any_enemy_country = {
 							any_army = {
@@ -258,22 +258,22 @@ objective_independent = {
 						}
 					}
 				}
-				# Reforzar fronteras para prevenir invasiones
+				# Reinforce borders to prevent invasions
 				weight = -50000
 			}
 		}
 		
 			# ============================================
-		# PRIORIDAD 9: GUARNICIÓN EN PROVINCIAS INTERIORES
+		# PRIORITY 9: GARRISON INTERIOR PROVINCES
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es nuestra provincia
+					# This is one of our provinces
 					owner = {
 						country = ROOT
 					}
-					# No está en la frontera
+					# It is not on the border
 					NOT = {
 						any_neighbor_province = {
 							owner = {
@@ -283,23 +283,23 @@ objective_independent = {
 							}
 						}
 					}
-					# No es capital (ya cubierta en prioridad 1)
+					# Not the capital (already covered in priority 1)
 					is_capital = no
 				}
-				# Guarnición ligera en provincias interiores
+				# Light garrison in interior provinces
 				weight = -10000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 10: REFUERZO DE CAPITAL (si está segura)
+		# PRIORITY 10: REINFORCE THE CAPITAL (when safe)
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es nuestra capital
+					# This is our capital
 					is_capital = yes
-					# No hay enemigos cerca (ya cubierto en prioridad 1)
+					# No enemies nearby (already covered in priority 1)
 					NOT = {
 						any_enemy_country = {
 							any_army = {
@@ -313,18 +313,18 @@ objective_independent = {
 						}
 					}
 				}
-				# Mantener guarnición en capital incluso si está segura
+				# Keep a garrison in the capital even when it is safe
 				weight = -20000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 11: PROVINCIAS NEUTRAS CERCANAS
+		# PRIORITY 11: NEARBY NEUTRAL PROVINCES
 		# ============================================
 		scope:province = {
 			if = {
 				limit = {
-					# Es provincia neutral (no nuestra ni enemiga)
+					# It is a neutral province (neither ours nor enemy)
 					owner = {
 						country = {
 							NOT = {
@@ -335,22 +335,22 @@ objective_independent = {
 							}
 						}
 					}
-					# Está adyacente a nuestro territorio
+					# It is adjacent to our territory
 					any_neighbor_province = {
 						owner = {
 							country = ROOT
 						}
 					}
 				}
-				# Explorar/asegurar provincias neutrales cercanas
+				# Scout/secure nearby neutral provinces
 				weight = -5000
 			}
 		}
 		
 		# ============================================
-		# PRIORIDAD 12: SIN DESTINO PREFERENTE
+		# PRIORITY 12: NO PREFERRED TARGET
 		# ============================================
-		# Si ninguna condición se cumple, el peso es 0 (neutral)
-		# La unidad se quedará donde está o buscará otro objetivo
+		# If no condition holds, the weight is 0 (neutral)
+		# The unit will stay where it is or look for another objective
 	}
 }
